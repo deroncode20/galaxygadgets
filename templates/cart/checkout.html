@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--main area-->
+	<main id="main" class="main-site checkout page">
+
+		<div class="container">
+
+			<div class="wrap-breadcrumb">
+				<ul>
+					<li class="item-link"><a href="#" class="link">home</a></li>
+					<li class="item-link"><span>CheckOut</span></li>
+				</ul>
+			</div>
+			<div class=" main-content-area">
+				<div class="wrap-address-billing">
+					<h3 class="box-title">Billing Address</h3>
+					<form action="{% url 'place_order' %}" method="POST" >
+                     {% csrf_token %}
+                     <p class="row-in-form">
+							<label for="phone">Email Addreess<span>*</span></label>
+							<input  type="text" name="email" value="" placeholder="email ">
+						</p>
+						
+						<p class="row-in-form">
+							<label for="phone">Phone number<span>*</span></label>
+							<input  type="number" name="phone" value="" placeholder="11 digits format">
+						</p>
+						
+						
+						<p class="row-in-form">
+							<label for="zip-code">Payment Method:</label>
+							 <select  name="mm_number" class="nice-select">
+                                <option>MTN</option>
+                                <option>AIRTEL</option>
+                                            
+                                       </select>
+						</p>
+						<p class="row-in-form">
+							<label for="city">Town / City<span>*</span></label>
+							<input id="city" type="text" name="city" value="" placeholder="City name">
+						</p>
+
+                        <p class="row-in-form">
+							<label for="note">Order Note<span>*</span></label>
+							<textarea name="order_note" type="text"   value="" placeholder="order_note"></textarea>
+						</p>
+						
+					
+				</div>
+				<div class="summary summary-checkout">
+					<div class="summary-item payment-method">
+						<h4 class="title-box">Payment Method</h4>
+						<p class="summary-info"><span class="title">Airtel Money</span></p>
+						<p class="summary-info"><span class="title">Mtn </span></p>
+                         {% for cart_item in cart_items %}
+						
+						<p class="summary-info grand-total"><span>Grand Total</span> <span class="grand-total-price">{{ cart_item.sub_total }}</span></p>
+                                                                   {% endfor %}
+						<button type="submit" class="btn btn-medium">Place order now</button>
+                        </form>
+					</div>
+					
+				</div>
+
+				<div class="wrap-show-advance-info-box style-1 box-in-site">
+					<h3 class="title-box">Most Viewed Products</h3>
+					<div class="wrap-products">
+						<div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5" data-loop="false" data-nav="true" data-dots="false" data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"3"},"1200":{"items":"5"}}' >
+
+							 {% for product in products %}
+									<div class="product product-style-2 equal-elem ">
+										<div class="product-thumnail">
+											<a href="{{ product.get_url}}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+												<figure><img src="{{product.images.url}}" width="800" height="800" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
+											</a>
+											<div class="wrap-btn">
+												<a href="{{ product.get_url}}" class="function-link">quick view</a>
+											</div>
+										</div>
+										<div class="product-info">
+											<a href="#" class="product-name"><span>{{product.product_name}}</span></a>
+											<div class="wrap-price"><span class="product-price">{{product.price}}</span></div>
+										</div>
+									</div>
+									{% endfor %}
+						
+						</div>
+					</div><!--End wrap-products-->
+				</div>
+
+			</div><!--end main content area-->
+		</div><!--end container-->
+
+	</main>
+{% endblock %}

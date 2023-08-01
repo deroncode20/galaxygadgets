@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--main area-->
+	<main id="main" class="main-site  shopping-cart page ">
+
+		<div class="container">
+
+			<div class="wrap-breadcrumb">
+				<ul>
+					<li class="item-link"><a href="{% url 'Homepage' %}" class="link">home</a></li>
+					<li class="item-link"><span>cart</span></li>
+				</ul>
+			</div>
+			<div class=" main-content-area">
+             {% if not cart_items %}
+                    <h2 class="text-center">Your Shopping Cart is Empty</h2>
+                    <br>
+                    <div class="text-center">
+                        <a href="{% url 'store' %}" class="btn btn-warning">Continue Shopping</a>
+                    </div>
+                {% else %}
+ 
+				<div class="wrap-iten-in-cart">
+					<h3 class="box-title">Products Name</h3>
+                    {% for cart_item in cart_items %}
+					<ul class="products-cart">
+						
+						<li class="pr-cart-item">
+							<div class="product-image">
+								<figure><img src="{{ cart_item.product.images.url }}" alt=""></figure>
+							</div>
+							<div class="product-name">
+								<a class="link-to-product" href="{{ cart_item.product.get_url }}">{{ cart_item.product.product_name }}</a>
+							</div>
+							<div class="price-field produtc-price  input-spinner">
+							<p class="price">{{ cart_item.product.price }}</p></div>
+							<div class="quantity input-group-prepend">
+								<div class="quantity-input input-group-prepend">
+								
+									<input type="text"  value="{{ cart_item.quantity }}"   >
+									<a class="btn   btn-reduce" href="{% url 'remove_cart' cart_item.product.id cart_item.id %}"></a>									
+									
+                                    <form action="{% url 'add_cart' cart_item.product.id %}" method="POST">
+                                        {% csrf_token %}									
+                                        <button type='submit' class="btn btn-increase" ></button>
+                                     </form>
+								</div>
+							</div>
+							<div class="price-field sub-total">
+                            <p class="price"> {{ cart_item.sub_total }}</p></div>
+							<div class="delete">
+								<a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="btn btn-delete" >
+									<span>Delete from your cart</span>
+									<i class="fa fa-times-circle" ></i>
+								</a>
+							</div>
+						</li>												
+					</ul>
+                     {% endfor %}
+				</div>
+
+				<div class="summary">
+					<div class="order-summary">
+						<h4 class="title-box">Order Summary</h4>
+						<p class="summary-info"><span class="title">Subtotal</span><b class="index">{{ total }}</b></p>
+						<p class="summary-info"><span class="title">Tax</span><b class="index">{{ tax }}</b></p>
+						<p class="summary-info total-info "><span class="title">Total</span><b class="index">{{ grand_total }}</b></p>
+					</div>
+					<div class="checkout-info">
+						
+						<a class="btn btn-checkout" href="{% url 'checkout'%}">Check out</a>
+						<a class="link-to-shop" href="{% url 'store' %}">Continue Shopping<i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+					</div>
+					<div class="update-clear">
+						<a class="btn btn-clear" href="#">Clear Shopping Cart</a>
+						<a class="btn btn-update" href="#">Update Shopping Cart</a>
+					</div>
+				</div>
+ {% endif %}
+				<div class="wrap-show-advance-info-box style-1 box-in-site">
+					<h3 class="title-box">Most Viewed Products</h3>
+					<div class="wrap-products">
+						<div class="products slide-carousel owl-carousel style-nav-1 equal-container" data-items="5" data-loop="false" data-nav="true" data-dots="false" data-responsive='{"0":{"items":"1"},"480":{"items":"2"},"768":{"items":"3"},"992":{"items":"3"},"1200":{"items":"5"}}' >
+
+							 {% for product in products %}
+									<div class="product product-style-2 equal-elem ">
+										<div class="product-thumnail">
+											<a href="{{ product.get_url}}" title="T-Shirt Raw Hem Organic Boro Constrast Denim">
+												<figure><img src="{{product.images.url}}" width="800" height="800" alt="T-Shirt Raw Hem Organic Boro Constrast Denim"></figure>
+											</a>
+											<div class="wrap-btn">
+												<a href="{{ product.get_url}}" class="function-link">quick view</a>
+											</div>
+										</div>
+										<div class="product-info">
+											<a href="#" class="product-name"><span>{{product.product_name}}</span></a>
+											<div class="wrap-price"><span class="product-price">{{product.price}}</span></div>
+										</div>
+									</div>
+									{% endfor %}
+						
+						</div>
+					</div><!--End wrap-products-->
+				</div>
+
+			</div><!--end main content area-->
+		</div><!--end container-->
+
+	</main>
+	<!--main area-->
+{% endblock %}

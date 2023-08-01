@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!--main area-->
+<main id="main" class="main-site checkout page">
+    <div class="container">
+        <div class="main-content-area">
+            <div class="summary summary-checkout">
+                <div class="summary-item payment-method">
+                    <h4 class="title-box">Payment Details</h4>
+                    <p class="summary-info"><span class="title">Country: </span>{{ order.country }}</p>
+                    <p class="summary-info"><span class="title">Email: </span>{{ order.email }}</p>
+                    <p class="summary-info"><span class="title">Phone: </span>{{ order.phone }}</p>
+                    {% if order.order_note %}
+                    <p class="summary-info"><span class="title">Order Note: </span>{{ order.order_note }}</p>
+                    {% endif %}
+                    <p class="summary-info grand-total"><span>Total:</span> <span class="grand-total-price">{{ total }}</span></p>
+                    <p class="summary-info grand-total"><span>Tax:</span> <span class="grand-total-price">{{ tax }}</span></p>
+                    <p class="summary-info grand-total"><span>Grand Total:</span> <span class="grand-total-price">{{ grand_total }} Ugx</span></p>
+                    <form method="POST" action="{% url 'payments'  %}">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="country" value="{{ order.country }}">
+                        <input type="hidden" name="country" value="{{ order_id }}">
+                        <input type="hidden" name="email" value="{{ order.email }}">
+                        <input type="hidden" name="phone" value="{{ order.phone }}">
+                        <input type="hidden" name="order_note" value="{{ order.order_note }}">
+                        <input type="hidden" name="total" value="{{ total }}">
+                        <input type="hidden" name="tax" value="{{ tax }}">
+                        <input type="hidden" name="grand_total" value="{{ grand_total }}">
+                        <button type="submit" class="btn btn-medium">Make Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div><!--end main content area-->
+    </div><!--end container-->
+</main>
+{% endblock %}

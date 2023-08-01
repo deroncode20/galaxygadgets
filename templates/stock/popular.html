@@ -1,0 +1,26 @@
+<div class="widget mercado-widget widget-product">
+						<h2 class="widget-title">Popular Products</h2>
+						<div class="widget-content">
+							<ul class="products">
+                            {% for product in products %}
+                            
+                           
+								<li class="product-item">
+									<div class="product product-widget-style">
+										<div class="thumbnnail">
+											<a href="{{ product.get_url }}" title="{{product.product_name}}">
+												<figure><img src="{{product.images.url}}" alt="{{product.product_name}}"></figure>
+											</a>
+										</div>
+										<div class="product-info">
+											<a href="#" class="product-name"><span>{{product.product_name}}</span></a>
+											<div class="wrap-price"><span class="product-price">ushs {{product.price}}</span></div>
+										</div>
+									</div>
+								</li>
+ {% endfor %}
+								
+
+							</ul>
+						</div>
+					</div>
